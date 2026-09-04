@@ -24,6 +24,12 @@ clientes (ex: checar se o pagamento está em dia para liberar/bloquear acesso).
 
 | Rota | O que faz |
 |---|---|
+| `GET, POST /api/clientes` | Lista / cria clientes |
+| `GET, PATCH, DELETE /api/clientes/:id` | Busca / atualiza / remove um cliente |
+| `GET, POST /api/produtos-servicos` | Lista (`?ativo=true\|false` opcional) / cria itens de catálogo |
+| `GET, PATCH /api/produtos-servicos/:id` | Busca / atualiza um item de catálogo (remoção é sempre soft delete via `ativo: false`) |
+| `GET, POST /api/orcamentos` | Lista (`?clienteId=&status=` opcionais) / cria orçamento com itens (valor total calculado automaticamente) |
+| `GET, PATCH /api/orcamentos/:id` | Busca / atualiza orçamento (forma de pagamento, observações, status, ou substitui os itens por inteiro — bloqueado depois de aprovado) |
 | `POST /api/orcamentos/:id/aprovar` | Aprova o orçamento e gera o contrato (+ parcela(s) inicial(is) + registro de projeto) |
 | `POST /api/parcelas/:id/pagamento` | Confirma pagamento de uma parcela; libera o projeto, reavalia suspensão, gera a próxima mensalidade (ou encerra o contrato, se essa era a última devida) |
 | `POST /api/contratos/:id/cancelamento` | Registra pedido de cancelamento e calcula/congela a última parcela devida (regra dos 15 dias) |
@@ -31,7 +37,8 @@ clientes (ex: checar se o pagamento está em dia para liberar/bloquear acesso).
 A lógica de negócio de cada rota vive em `src/lib/services/` (funções puras, testáveis sem banco);
 as rotas em `src/app/api/` são só a camada HTTP fina por cima delas.
 
-Ainda não há CRUD de clientes/catálogo/orçamentos — só os 3 fluxos acima.
+Item de orçamento aceita `produtoServicoId`, `precoNegociado` (opcional — default é o `precoBase`
+do catálogo), `valorImplantacao` (só para modelo `IMPLANTACAO_MAIS_MENSAL`) e `quantidade`.
 
 ## Stack
 
@@ -54,12 +61,15 @@ npm run dev              # sobe o Next.js em http://localhost:3000
 ```
 prisma/schema.prisma         modelo de dados (clientes, catálogo, orçamentos, contratos, parcelas, projetos)
 src/app/                     App Router do Next.js (páginas e rotas de API)
-src/app/api/                 endpoints HTTP (aprovar orçamento, confirmar pagamento, cancelamento)
+src/app/api/                 endpoints HTTP (clientes, catálogo, orçamentos, aprovação, pagamento, cancelamento)
 src/lib/prisma.ts            singleton do PrismaClient (padrão recomendado p/ hot-reload do Next.js)
+src/lib/http.ts              helpers das rotas (parse de body JSON, tradução de erro -> resposta HTTP)
+src/lib/db.ts                tipo Db (PrismaClient | client em transação) usado pelos serviços
+src/lib/enums.ts             listas fechadas de validação (forma de pagamento, modelo de cobrança, status)
 src/lib/financeiro.ts        função central de cálculo financeiro (multa, juros, suspensão, cancelamento)
 src/lib/services/            lógica de negócio por trás das rotas de API (testável sem banco)
 src/lib/__tests__/           testes das regras de negócio financeiras
-src/lib/services/__tests__/  testes dos serviços (aprovação, pagamento, cancelamento)
+src/lib/services/__tests__/  testes dos serviços (CRUD, aprovação, pagamento, cancelamento)
 ```
 
 A página inicial em `src/app/page.tsx` é apenas um placeholder confirmando que o projeto roda —

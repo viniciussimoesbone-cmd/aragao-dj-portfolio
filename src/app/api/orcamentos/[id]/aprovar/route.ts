@@ -1,38 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { lerCorpoJson, responderErro } from "@/lib/http";
 import { aprovarOrcamento } from "@/lib/services/orcamentos";
-import { ErroNegocio } from "@/lib/services/erros";
-
-interface CorpoRequisicao {
-  dataInicio?: string;
-  diaVencimento?: number;
-}
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-
-  let body: CorpoRequisicao = {};
-  try {
-    const texto = await request.text();
-    body = texto ? JSON.parse(texto) : {};
-  } catch {
-    return NextResponse.json({ erro: "Corpo da requisição inválido (JSON malformado)." }, { status: 400 });
-  }
+  const corpo = await lerCorpoJson(request);
+  if (!corpo.ok) return corpo.resposta;
 
   try {
     const resultado = await prisma.$transaction((tx) =>
       aprovarOrcamento(tx, {
         orcamentoId: id,
-        dataInicio: body.dataInicio ? new Date(body.dataInicio) : undefined,
-        diaVencimento: body.diaVencimento,
+        dataInicio: corpo.body.dataInicio ? new Date(String(corpo.body.dataInicio)) : undefined,
+        diaVencimento: corpo.body.diaVencimento !== undefined ? Number(corpo.body.diaVencimento) : undefined,
       })
     );
     return NextResponse.json(resultado, { status: 201 });
   } catch (erro) {
-    if (erro instanceof ErroNegocio) {
-      return NextResponse.json({ erro: erro.message }, { status: erro.status });
-    }
-    console.error(erro);
-    return NextResponse.json({ erro: "Erro interno ao aprovar orçamento." }, { status: 500 });
+    return responderErro(erro, "Erro interno ao aprovar orçamento.");
   }
 }
