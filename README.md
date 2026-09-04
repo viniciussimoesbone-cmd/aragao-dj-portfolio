@@ -18,7 +18,7 @@ Todas as regras de multa/juros/suspensão/cancelamento vivem em **um único mód
 
 ## Stack
 
-- Node.js + TypeScript
+- Next.js (App Router) + TypeScript — frontend e backend no mesmo projeto
 - PostgreSQL (Supabase) via Prisma (`prisma/schema.prisma`)
 - Vitest para testes
 
@@ -29,14 +29,18 @@ npm install
 cp .env.example .env   # preencher DATABASE_URL do seu projeto Supabase
 npm run prisma:migrate # cria as tabelas no banco
 npm test                # roda os testes da lógica financeira
+npm run dev              # sobe o Next.js em http://localhost:3000
 ```
 
 ## Estrutura
 
 ```
-prisma/schema.prisma        modelo de dados (clientes, catálogo, orçamentos, contratos, parcelas, projetos)
-src/lib/financeiro.ts       função central de cálculo financeiro (multa, juros, suspensão, cancelamento)
-src/lib/__tests__/          testes das regras de negócio
+prisma/schema.prisma         modelo de dados (clientes, catálogo, orçamentos, contratos, parcelas, projetos)
+src/app/                     App Router do Next.js (páginas e, futuramente, rotas de API)
+src/lib/prisma.ts            singleton do PrismaClient (padrão recomendado p/ hot-reload do Next.js)
+src/lib/financeiro.ts        função central de cálculo financeiro (multa, juros, suspensão, cancelamento)
+src/lib/__tests__/           testes das regras de negócio
 ```
 
-A interface (API/telas) ainda não foi construída — é a próxima etapa, sobre esta base.
+A página inicial em `src/app/page.tsx` é apenas um placeholder confirmando que o projeto roda —
+as telas reais da Fase 0 (clientes, orçamentos, contratos etc.) ainda não foram construídas.
