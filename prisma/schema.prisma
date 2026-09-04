@@ -115,7 +115,13 @@ model OrcamentoItem {
   nomeItem           String
   modeloCobranca     ModeloCobranca
   precoBaseNoMomento Decimal        @db.Decimal(10, 2)
+  // Para UNICO: preço total. Para MENSAL: valor da mensalidade. Para
+  // IMPLANTACAO_MAIS_MENSAL: valor da mensalidade (a taxa de implantação
+  // fica em valorImplantacao, abaixo) — mantém um único campo "principal"
+  // em vez de duplicar preço para os dois primeiros modelos.
   precoNegociado     Decimal        @db.Decimal(10, 2)
+  // Só preenchido quando modeloCobranca = IMPLANTACAO_MAIS_MENSAL.
+  valorImplantacao   Decimal?       @db.Decimal(10, 2)
   quantidade         Int            @default(1)
   subtotal           Decimal        @db.Decimal(10, 2)
 

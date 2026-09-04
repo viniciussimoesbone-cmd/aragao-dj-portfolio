@@ -4,6 +4,8 @@
  * deve reimplementar estas fórmulas — sempre importar e usar estas funções.
  */
 
+import { arredondar } from "./moeda";
+
 export const PERCENTUAL_MULTA = 0.1; // 10% sobre o valor original
 export const PERCENTUAL_JUROS_DIARIO = 0.0033; // 0,33% ao dia
 export const DIAS_PARA_SUSPENSAO_CONTRATO = 10;
@@ -22,10 +24,6 @@ function diasEntre(dataA: Date, dataB: Date): number {
 
 function adicionarDias(data: Date, dias: number): Date {
   return new Date(paraDataUTC(data) + dias * UM_DIA_MS);
-}
-
-function arredondar(valor: number): number {
-  return Math.round(valor * 100) / 100;
 }
 
 export interface DadosParcela {
