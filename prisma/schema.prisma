@@ -1,0 +1,194 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum FormaPagamento {
+  PIX
+  BOLETO
+  CARTAO
+  TRANSFERENCIA
+}
+
+enum ModeloCobranca {
+  UNICO
+  MENSAL
+  IMPLANTACAO_MAIS_MENSAL
+}
+
+enum StatusOrcamento {
+  RASCUNHO
+  ENVIADO
+  APROVADO
+  REJEITADO
+}
+
+// SUSPENSO pode voltar a ATIVO se a parcela em atraso for paga.
+// ENCERRADO é definitivo: contrato pontual concluído ou cancelamento
+// de contrato mensal processado — nunca mais gera novas parcelas.
+enum StatusAdministrativoContrato {
+  ATIVO
+  SUSPENSO
+  ENCERRADO
+}
+
+enum TipoParcela {
+  IMPLANTACAO
+  MENSALIDADE
+  UNICO
+}
+
+enum StatusParcela {
+  PENDENTE
+  ATRASADO
+  PAGO
+}
+
+enum StatusProjeto {
+  AGUARDANDO_PAGAMENTO
+  EM_EXECUCAO
+  ENTREGUE
+}
+
+model Cliente {
+  id           String   @id @default(uuid())
+  nome         String
+  contato      String?
+  whatsapp     String?
+  empresa      String?
+  criadoEm     DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+
+  orcamentos Orcamento[]
+  contratos  Contrato[]
+
+  @@map("clientes")
+}
+
+model ProdutoServico {
+  id             String         @id @default(uuid())
+  nome           String
+  categoria      String
+  precoBase      Decimal        @db.Decimal(10, 2)
+  modeloCobranca ModeloCobranca
+  ativo          Boolean        @default(true)
+  criadoEm       DateTime       @default(now())
+  atualizadoEm   DateTime       @updatedAt
+
+  itensOrcamento OrcamentoItem[]
+
+  @@map("produtos_servicos")
+}
+
+model Orcamento {
+  id             String          @id @default(uuid())
+  numero         String          @unique
+  clienteId      String
+  cliente        Cliente         @relation(fields: [clienteId], references: [id])
+  status         StatusOrcamento @default(RASCUNHO)
+  formaPagamento FormaPagamento?
+  valorTotal     Decimal         @default(0) @db.Decimal(10, 2)
+  observacoes    String?
+  dataAprovacao  DateTime?
+  criadoEm       DateTime        @default(now())
+  atualizadoEm   DateTime        @updatedAt
+
+  itens    OrcamentoItem[]
+  contrato Contrato?
+
+  @@map("orcamentos")
+}
+
+// Guarda um retrato (snapshot) do produto/serviço no momento em que foi
+// adicionado ao orçamento. O catálogo (ProdutoServico) pode mudar de preço
+// depois — isso não pode alterar orçamentos/contratos já negociados.
+model OrcamentoItem {
+  id                 String         @id @default(uuid())
+  orcamentoId        String
+  orcamento          Orcamento      @relation(fields: [orcamentoId], references: [id], onDelete: Cascade)
+  produtoServicoId   String
+  produtoServico     ProdutoServico @relation(fields: [produtoServicoId], references: [id])
+  nomeItem           String
+  modeloCobranca     ModeloCobranca
+  precoBaseNoMomento Decimal        @db.Decimal(10, 2)
+  precoNegociado     Decimal        @db.Decimal(10, 2)
+  quantidade         Int            @default(1)
+  subtotal           Decimal        @db.Decimal(10, 2)
+
+  @@map("orcamento_itens")
+}
+
+// Gerado automaticamente quando um Orcamento é aprovado, herdando seus dados.
+// A partir daí o orçamento de origem é tratado como imutável.
+model Contrato {
+  id                   String                       @id @default(uuid())
+  numero               String                       @unique
+  orcamentoId          String                       @unique
+  orcamento            Orcamento                    @relation(fields: [orcamentoId], references: [id])
+  clienteId            String
+  cliente              Cliente                      @relation(fields: [clienteId], references: [id])
+  valorTotal           Decimal                      @db.Decimal(10, 2)
+  formaPagamento       FormaPagamento
+  dataInicio           DateTime
+  // Dia do mês usado para projetar os vencimentos das próximas mensalidades
+  // (necessário para calcular a última parcela devida antes de ela existir).
+  diaVencimento        Int
+  statusAdministrativo StatusAdministrativoContrato @default(ATIVO)
+
+  // Preenchidos quando o cliente solicita cancelamento (contrato mensal).
+  // dataUltimaParcelaDevida é calculada uma única vez no momento do pedido
+  // e congelada aqui, para não haver dúvida na cobrança depois.
+  dataSolicitacaoCancelamento DateTime?
+  dataUltimaParcelaDevida     DateTime?
+  dataEncerramento            DateTime?
+
+  criadoEm     DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+
+  parcelas Parcela[]
+  projeto  Projeto?
+
+  @@map("contratos")
+}
+
+// O campo "status" só é gravado com valor definitivo quando a parcela é
+// paga. Enquanto pendente/atrasada, o status e os valores de multa/juros
+// devem sempre ser obtidos via a função central de cálculo financeiro
+// (src/lib/financeiro.ts) — nunca recalculados de outra forma.
+model Parcela {
+  id             String        @id @default(uuid())
+  contratoId     String
+  contrato       Contrato      @relation(fields: [contratoId], references: [id])
+  tipo           TipoParcela
+  // Competência da mensalidade, ex: "2026-09". Nulo para parcela única/implantação.
+  competencia    String?
+  valorOriginal  Decimal       @db.Decimal(10, 2)
+  dataVencimento DateTime
+  dataPagamento  DateTime?
+  valorPago      Decimal?      @db.Decimal(10, 2)
+  status         StatusParcela @default(PENDENTE)
+  // Marca a parcela como a última devida (cancelamento processado ou
+  // contrato pontual) — depois dela, nenhuma nova parcela é gerada.
+  ultimaParcela  Boolean       @default(false)
+  criadoEm       DateTime      @default(now())
+
+  @@map("parcelas")
+}
+
+// Só é liberado para EM_EXECUCAO depois que a parcela relevante
+// (implantação, ou a única, ou a primeira mensalidade) for confirmada paga.
+model Projeto {
+  id            String        @id @default(uuid())
+  contratoId    String        @unique
+  contrato      Contrato      @relation(fields: [contratoId], references: [id])
+  status        StatusProjeto @default(AGUARDANDO_PAGAMENTO)
+  dataLiberacao DateTime?
+  dataEntrega   DateTime?
+  criadoEm      DateTime      @default(now())
+
+  @@map("projetos")
+}
