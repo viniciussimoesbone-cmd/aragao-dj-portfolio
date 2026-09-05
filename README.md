@@ -2,6 +2,8 @@
 
 Sistema de gestão de negócio — clientes, catálogo, orçamentos, contratos, financeiro e execução de projetos.
 
+Deploy: https://nivora-wine-five.vercel.app (Vercel, branch `main`, Postgres no Supabase)
+
 ## Fase 0 — Núcleo
 
 Esta fase cobre apenas o modelo de dados e as regras de negócio centrais (sem interface):
