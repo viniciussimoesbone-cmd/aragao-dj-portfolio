@@ -1,8 +1,99 @@
-* {
-  box-sizing: border-box;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply box-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-ink text-ink-100 antialiased;
+    font-family: var(--font-sans), system-ui, sans-serif;
+  }
+
+  ::selection {
+    @apply bg-blood text-white;
+  }
+
+  :focus-visible {
+    @apply outline outline-2 outline-offset-2 outline-blood;
+  }
 }
 
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-12;
+  }
+
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-widest text-blood;
+  }
+
+  .heading-display {
+    @apply font-display uppercase leading-[0.95] tracking-tight text-white;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full px-7 py-3.5 text-sm font-semibold uppercase tracking-wider transition-all duration-300 ease-out;
+  }
+
+  .btn-primary {
+    @apply btn bg-blood text-white shadow-[0_0_0_0_rgba(224,18,36,0.6)] hover:-translate-y-0.5 hover:bg-blood-600 hover:shadow-[0_8px_30px_-6px_rgba(224,18,36,0.65)] active:translate-y-0;
+  }
+
+  .btn-outline {
+    @apply btn border border-white/25 bg-white/[0.03] text-white backdrop-blur-sm hover:-translate-y-0.5 hover:border-white/60 hover:bg-white/10 active:translate-y-0;
+  }
+
+  .btn-ghost {
+    @apply btn bg-white text-ink-950 hover:-translate-y-0.5 hover:bg-ink-100 active:translate-y-0;
+  }
+
+  .field {
+    @apply rounded-xl border border-white/15 bg-white/[0.04] px-4 py-3 text-sm text-white outline-none transition-colors placeholder:text-ink-500 focus:border-blood;
+  }
+}
+
+@layer utilities {
+  .safe-b {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .safe-r {
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 60px rgba(224, 18, 36, 0.35);
+  }
+
+  .noise-overlay {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 3px 3px;
+  }
+
+  .mask-fade-b {
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  }
+}
+
+/* thin, on-brand scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 999px;
+  border: 2px solid #050505;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #e01224;
 }
