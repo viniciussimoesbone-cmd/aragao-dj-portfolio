@@ -1,10 +1,19 @@
-# NIVORA
+# DJ Aragão — site institucional + NIVORA (núcleo de gestão)
 
-Sistema de gestão de negócio — clientes, catálogo, orçamentos, contratos, financeiro e execução de projetos.
+Este projeto tem duas partes no mesmo app Next.js:
+
+1. **Site institucional do DJ Aragão** (`src/app/page.tsx`) — página pública com Hero, Sobre,
+   Experiência, Agenda, Galeria, Vídeos, Social e um formulário de contato que abre o WhatsApp
+   com os dados preenchidos. Todo o conteúdo textual e os caminhos de imagem/vídeo ficam
+   centralizados em `src/lib/site/content.ts`.
+2. **NIVORA** — núcleo de gestão de negócio (clientes, catálogo, orçamentos, contratos,
+   financeiro e execução de projetos), exposto hoje só como API HTTP (sem telas). Pensado para,
+   futuramente, ser a base de um painel interno de administração dos contratos/eventos do
+   próprio Aragão (e, depois, de outros artistas).
 
 Deploy: https://aragao-dj-portfolio.vercel.app (Vercel, branch `main`, Postgres no Supabase)
 
-## Fase 0 — Núcleo
+## NIVORA — Fase 0 (núcleo)
 
 Esta fase cobre apenas o modelo de dados e as regras de negócio centrais (sem interface):
 
@@ -18,11 +27,15 @@ Esta fase cobre apenas o modelo de dados e as regras de negócio centrais (sem i
 Todas as regras de multa/juros/suspensão/cancelamento vivem em **um único módulo central**:
 `src/lib/financeiro.ts` — nenhuma outra parte do sistema deve reimplementar essas fórmulas.
 
+O site institucional do DJ Aragão ainda não consome essas APIs — o formulário de contato
+(`src/components/site/Booking.tsx`) só monta uma mensagem e abre o WhatsApp. A integração entre
+o formulário público e os orçamentos/contratos do NIVORA é trabalho futuro.
+
 ## API (endpoints implementados até agora)
 
 Endpoints HTTP reais (`src/app/api/.../route.ts`) — não Server Actions — pensados para serem
-consumidos tanto pelas telas do NIVORA quanto, futuramente, por sistemas externos entregues a
-clientes (ex: checar se o pagamento está em dia para liberar/bloquear acesso).
+consumidos tanto por um futuro painel interno quanto, futuramente, por sistemas externos
+entregues a clientes (ex: checar se o pagamento está em dia para liberar/bloquear acesso).
 
 | Rota | O que faz |
 |---|---|
@@ -45,6 +58,7 @@ do catálogo), `valorImplantacao` (só para modelo `IMPLANTACAO_MAIS_MENSAL`) e 
 ## Stack
 
 - Next.js (App Router) + TypeScript — frontend e backend no mesmo projeto
+- Tailwind CSS — estilo do site institucional
 - PostgreSQL (Supabase) via Prisma (`prisma/schema.prisma`)
 - Vitest para testes
 
@@ -52,27 +66,27 @@ do catálogo), `valorImplantacao` (só para modelo `IMPLANTACAO_MAIS_MENSAL`) e 
 
 ```bash
 npm install
-cp .env.example .env   # preencher DATABASE_URL do seu projeto Supabase
+cp .env.example .env   # preencher DATABASE_URL/DIRECT_URL do seu projeto Supabase
 npm run prisma:migrate # cria as tabelas no banco
-npm test                # roda os testes da lógica financeira
+npm test                # roda os testes da lógica financeira e dos serviços
 npm run dev              # sobe o Next.js em http://localhost:3000
 ```
 
 ## Estrutura
 
 ```
-prisma/schema.prisma         modelo de dados (clientes, catálogo, orçamentos, contratos, parcelas, projetos)
-src/app/                     App Router do Next.js (páginas e rotas de API)
-src/app/api/                 endpoints HTTP (clientes, catálogo, orçamentos, aprovação, pagamento, cancelamento)
-src/lib/prisma.ts            singleton do PrismaClient (padrão recomendado p/ hot-reload do Next.js)
-src/lib/http.ts              helpers das rotas (parse de body JSON, tradução de erro -> resposta HTTP)
-src/lib/db.ts                tipo Db (PrismaClient | client em transação) usado pelos serviços
-src/lib/enums.ts             listas fechadas de validação (forma de pagamento, modelo de cobrança, status)
-src/lib/financeiro.ts        função central de cálculo financeiro (multa, juros, suspensão, cancelamento)
-src/lib/services/            lógica de negócio por trás das rotas de API (testável sem banco)
-src/lib/__tests__/           testes das regras de negócio financeiras
-src/lib/services/__tests__/  testes dos serviços (CRUD, aprovação, pagamento, cancelamento)
+prisma/schema.prisma           modelo de dados (clientes, catálogo, orçamentos, contratos, parcelas, projetos)
+src/app/page.tsx               página única do site institucional do DJ Aragão
+src/app/api/                   endpoints HTTP do NIVORA (clientes, catálogo, orçamentos, aprovação, pagamento, cancelamento)
+src/components/site/           componentes visuais do site (Header, Hero, About, Experience, Agenda, Gallery, Videos, Social, Booking, Footer...)
+src/lib/site/content.ts        todo o conteúdo textual e os caminhos de imagem/vídeo do site
+public/images, public/videos   assets do site (logo, fotos, vídeos)
+src/lib/prisma.ts              singleton do PrismaClient (padrão recomendado p/ hot-reload do Next.js)
+src/lib/http.ts                helpers das rotas (parse de body JSON, tradução de erro -> resposta HTTP)
+src/lib/db.ts                  tipo Db (PrismaClient | client em transação) usado pelos serviços
+src/lib/enums.ts               listas fechadas de validação (forma de pagamento, modelo de cobrança, status)
+src/lib/financeiro.ts          função central de cálculo financeiro (multa, juros, suspensão, cancelamento)
+src/lib/services/              lógica de negócio por trás das rotas de API do NIVORA (testável sem banco)
+src/lib/__tests__/             testes das regras de negócio financeiras
+src/lib/services/__tests__/    testes dos serviços (CRUD, aprovação, pagamento, cancelamento)
 ```
-
-A página inicial em `src/app/page.tsx` é apenas um placeholder confirmando que o projeto roda —
-as telas reais da Fase 0 (clientes, orçamentos, contratos etc.) ainda não foram construídas.
