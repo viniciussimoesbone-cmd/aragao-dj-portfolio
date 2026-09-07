@@ -5,7 +5,7 @@ Social e um formulário de contato que abre o WhatsApp com os dados preenchidos.
 conteúdo textual e os caminhos de imagem/vídeo ficam centralizados em
 `src/lib/site/content.ts`.
 
-Deploy: https://aragao-dj-portfolio.vercel.app (Vercel, branch `main`)
+Deploy: https://aragao-dj.vercel.app (Vercel, branch `main`)
 
 ## Stack
 
