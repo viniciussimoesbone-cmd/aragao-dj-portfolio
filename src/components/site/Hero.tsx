@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { hero } from "@/lib/site/content";
 import { IconArrowRight, IconChevronDown } from "./Icons";
@@ -14,9 +15,16 @@ const EQ_BARS = [
 export function Hero() {
   return (
     <section id="inicio" className="relative flex min-h-[100svh] items-center overflow-hidden bg-ink-950">
-      {/* Background: stage-light gradients standing in for the artist photo until one is supplied. */}
+      <Image
+        src={hero.image}
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="absolute inset-0 object-cover object-[center_30%] opacity-60"
+      />
       <div
-        className="absolute inset-0 [background:radial-gradient(60%_50%_at_82%_18%,rgba(224,18,36,0.28),transparent_60%),radial-gradient(45%_40%_at_10%_85%,rgba(224,18,36,0.16),transparent_65%),linear-gradient(180deg,#0a0a0a_0%,#050505_60%,#000_100%)] lg:bg-fixed"
+        className="absolute inset-0 [background:radial-gradient(60%_50%_at_82%_18%,rgba(224,18,36,0.28),transparent_60%),radial-gradient(45%_40%_at_10%_85%,rgba(224,18,36,0.16),transparent_65%),linear-gradient(180deg,rgba(10,10,10,0.55)_0%,rgba(5,5,5,0.75)_60%,#000_100%)] lg:bg-fixed"
         aria-hidden
       />
       <div className="noise-overlay absolute inset-0 opacity-40" aria-hidden />

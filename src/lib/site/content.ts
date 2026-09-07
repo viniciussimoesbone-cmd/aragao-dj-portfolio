@@ -8,6 +8,7 @@ export const artist = {
   whatsappLink: "https://wa.me/5547984485341",
   whatsappDefaultMessage:
     "Olá, Aragão! Vim pelo site e gostaria de solicitar informações sobre uma contratação.",
+  logo: { src: "/images/logo.png", alt: "Logo DJ Aragão" },
 };
 
 export const navLinks = [
@@ -26,6 +27,7 @@ export const hero = {
     "Experiência, energia e música para transformar cada evento em uma experiência inesquecível.",
   primaryCta: { label: "Contratar agora", href: "#contato" },
   secondaryCta: { label: "Ver experiências", href: "#experiencia" },
+  image: "/images/hero.jpg",
 };
 
 export const about = {
@@ -40,6 +42,7 @@ export const about = {
     { value: "+XX", label: "Cidades" },
     { value: "+XX", label: "Experiências" },
   ],
+  image: "/images/about.jpg",
 };
 
 export type ExperienceCategory =
@@ -78,6 +81,7 @@ export const experienceItems: {
   {
     category: "Shows",
     description: "Apresentações autorais com identidade sonora própria do Aragão.",
+    image: "/images/experience-shows.jpg",
   },
   {
     category: "Produções",
@@ -107,10 +111,10 @@ export const agendaEvents: AgendaEvent[] = [];
 export type GalleryCategory = "Shows" | "Eventos" | "Bastidores" | "Público" | "Produções";
 
 export const galleryItems: { category: GalleryCategory; image?: string; span?: "tall" | "wide" }[] = [
-  { category: "Shows", span: "tall" },
+  { category: "Shows", span: "tall", image: "/images/gallery-2.jpg" },
   { category: "Eventos" },
   { category: "Bastidores" },
-  { category: "Público", span: "wide" },
+  { category: "Público", span: "wide", image: "/images/gallery-1.jpg" },
   { category: "Produções" },
   { category: "Shows" },
   { category: "Eventos", span: "tall" },
@@ -127,8 +131,8 @@ export const videoItems: {
   url?: string;
 }[] = [
   { title: "Aftermovie — em breve", platform: "YouTube" },
-  { title: "Reel de set — em breve", platform: "Instagram" },
-  { title: "Bastidores de produção — em breve", platform: "Hospedado" },
+  { title: "Bastidores no set", platform: "Hospedado", url: "/videos/bastidores-1.mp4" },
+  { title: "Clipe de show", platform: "Hospedado", url: "/videos/clipe-set.mp4" },
 ];
 
 export const socials = [

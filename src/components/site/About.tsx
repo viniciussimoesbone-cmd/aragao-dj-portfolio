@@ -46,7 +46,7 @@ export function About() {
 
         <RevealOnScroll delay={120}>
           <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl border border-white/10 shadow-2xl shadow-black/60 lg:aspect-[3/4]">
-            <PlaceholderImage label="Foto — retrato do artista" />
+            <PlaceholderImage label="Foto — retrato do artista" src={about.image} alt="Aragão em apresentação" />
           </div>
         </RevealOnScroll>
       </div>
