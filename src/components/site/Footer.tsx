@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { artist, navLinks } from "@/lib/site/content";
 import { IconInstagram, IconWhatsapp } from "./Icons";
@@ -9,9 +10,13 @@ export function Footer() {
       <div className="container-page">
         <div className="flex flex-col gap-10 border-b border-white/10 pb-10 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <p className="font-display text-2xl tracking-wide text-white">
-              ARAG<span className="text-blood">Ã</span>O
-            </p>
+            <Image
+              src={artist.logo.src}
+              alt={artist.logo.alt}
+              width={175}
+              height={40}
+              className="h-9 w-auto"
+            />
             <p className="mt-2 text-xs font-semibold uppercase tracking-widest text-ink-400">
               {artist.role}
             </p>
