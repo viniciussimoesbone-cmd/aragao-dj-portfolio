@@ -8,7 +8,7 @@ function EventCard({ event }: { event: AgendaEvent }) {
   return (
     <article className="flex flex-col gap-6 rounded-2xl border border-white/10 bg-ink-950 p-6 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex items-center gap-5">
-        <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl bg-blood text-white">
+        <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl bg-gold text-ink-950">
           <span className="text-xl font-bold leading-none">{event.day}</span>
           <span className="text-[0.65rem] font-semibold uppercase tracking-widest">{event.month}</span>
         </div>
@@ -58,7 +58,7 @@ export function Agenda() {
                     href="https://www.instagram.com/aragaodj"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-blood hover:underline"
+                    className="text-gold hover:underline"
                   >
                     @aragaodj
                   </a>{" "}

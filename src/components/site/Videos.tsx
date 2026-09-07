@@ -30,7 +30,7 @@ export function Videos() {
                   {video.platform}
                 </span>
                 <span className="absolute inset-0 flex items-center justify-center">
-                  <span className="flex h-16 w-16 items-center justify-center rounded-full bg-blood/90 text-white shadow-lg shadow-black/50 transition-transform duration-300 group-hover:scale-110">
+                  <span className="flex h-16 w-16 items-center justify-center rounded-full bg-gold/90 text-ink-950 shadow-lg shadow-black/50 transition-transform duration-300 group-hover:scale-110">
                     <IconPlay className="ml-1 h-6 w-6" />
                   </span>
                 </span>

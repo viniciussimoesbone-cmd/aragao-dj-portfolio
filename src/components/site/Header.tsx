@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { artist, navLinks } from "@/lib/site/content";
 import { cn } from "@/lib/cn";
@@ -33,15 +32,11 @@ export function Header() {
       )}
     >
       <div className="container-page flex h-20 items-center justify-between">
-        <Link href="#inicio" className="flex items-center">
-          <Image
-            src={artist.logo.src}
-            alt={artist.logo.alt}
-            width={175}
-            height={40}
-            priority
-            className="h-9 w-auto sm:h-10"
-          />
+        <Link
+          href="#inicio"
+          className="font-display bg-[linear-gradient(120deg,#f3d98a_0%,#c9a24b_55%,#8a6a2a_100%)] bg-clip-text text-2xl tracking-wide text-transparent"
+        >
+          ARAGÃO
         </Link>
 
         <nav className="hidden items-center gap-9 lg:flex">

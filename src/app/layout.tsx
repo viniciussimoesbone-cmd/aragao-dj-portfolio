@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Bebas_Neue, Inter } from "next/font/google";
+import { Anton, Manrope } from "next/font/google";
 import { WhatsappFloatingButton } from "@/components/site/WhatsappFloatingButton";
 import "./globals.css";
 
-const displayFont = Bebas_Neue({
+const displayFont = Anton({
   subsets: ["latin"],
   weight: "400",
   variable: "--font-display",
 });
 
-const sansFont = Inter({
+const sansFont = Manrope({
   subsets: ["latin"],
   variable: "--font-sans",
 });

@@ -11,29 +11,37 @@ export function Experience() {
           <SectionHeading eyebrow="Portfólio" title="EXPERIÊNCIA" />
         </RevealOnScroll>
 
-        <div className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 grid grid-cols-2 gap-[2px] lg:grid-cols-4 lg:auto-rows-[180px]">
           {experienceItems.map((item, i) => (
             <RevealOnScroll
               key={item.category}
-              delay={(i % 3) * 90}
-              className={item.featured ? "sm:col-span-2" : undefined}
+              delay={(i % 4) * 80}
+              className={item.featured ? "col-span-2 row-span-2" : undefined}
             >
-              <article className="group relative h-full overflow-hidden rounded-2xl border border-white/10 bg-ink-950">
-                <div className={`relative ${item.featured ? "aspect-[16/9]" : "aspect-[4/5]"}`}>
-                  <PlaceholderImage
-                    label={`Foto — ${item.category}`}
-                    src={item.image}
-                    className="transition-transform duration-700 ease-out group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent" />
+              <article className="group relative flex h-full min-h-[180px] flex-col justify-between overflow-hidden bg-ink-950 p-6">
+                {item.image && (
+                  <>
+                    <PlaceholderImage
+                      label={`Foto — ${item.category}`}
+                      src={item.image}
+                      className="opacity-25 transition-opacity duration-500 group-hover:opacity-40"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/60 to-ink-950/20" />
+                  </>
+                )}
+
+                <span className="relative font-display text-xs tracking-[0.1em] text-ink-500">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+
+                <div className="relative">
+                  <h3 className={`heading-display text-white ${item.featured ? "text-3xl sm:text-4xl" : "text-xl"}`}>
+                    {item.category}
+                  </h3>
+                  {(item.featured || item.image) && (
+                    <p className="mt-2 max-w-xs text-sm text-ink-300">{item.description}</p>
+                  )}
                 </div>
-                <div className="absolute inset-x-0 bottom-0 p-6">
-                  <h3 className="heading-display text-2xl text-white">{item.category}</h3>
-                  <p className="mt-2 max-w-sm text-sm text-ink-300 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                    {item.description}
-                  </p>
-                </div>
-                <div className="absolute right-5 top-5 h-2 w-2 rounded-full bg-blood opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
               </article>
             </RevealOnScroll>
           ))}

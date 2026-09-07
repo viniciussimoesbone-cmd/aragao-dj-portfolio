@@ -24,7 +24,7 @@ export function Hero() {
         className="absolute inset-0 object-cover object-[center_30%] opacity-60"
       />
       <div
-        className="absolute inset-0 [background:radial-gradient(60%_50%_at_82%_18%,rgba(224,18,36,0.28),transparent_60%),radial-gradient(45%_40%_at_10%_85%,rgba(224,18,36,0.16),transparent_65%),linear-gradient(180deg,rgba(10,10,10,0.55)_0%,rgba(5,5,5,0.75)_60%,#000_100%)] lg:bg-fixed"
+        className="absolute inset-0 [background:radial-gradient(60%_50%_at_82%_18%,rgba(201,162,75,0.22),transparent_60%),radial-gradient(45%_40%_at_10%_85%,rgba(201,162,75,0.12),transparent_65%),linear-gradient(180deg,rgba(10,10,10,0.55)_0%,rgba(5,5,5,0.75)_60%,#000_100%)] lg:bg-fixed"
         aria-hidden
       />
       <div className="noise-overlay absolute inset-0 opacity-40" aria-hidden />
@@ -33,7 +33,7 @@ export function Hero() {
       <div className="container-page relative z-10 pt-28">
         <div className="max-w-3xl animate-fade-up">
           <p className="eyebrow">{hero.eyebrow}</p>
-          <h1 className="heading-display text-glow mt-4 text-6xl sm:text-7xl lg:text-[8rem]">
+          <h1 className="heading-display text-glow mt-4 bg-[linear-gradient(120deg,#f8e7b8_0%,#c9a24b_45%,#7d5f22_100%)] bg-clip-text text-6xl text-transparent sm:text-7xl lg:text-[8rem]">
             {hero.title}
           </h1>
           <p className="mt-6 max-w-xl text-base text-ink-200 sm:text-lg">{hero.subtitle}</p>
@@ -53,7 +53,7 @@ export function Hero() {
           {EQ_BARS.map((bar, i) => (
             <span
               key={i}
-              className={`w-1.5 origin-bottom rounded-full bg-blood ${bar.height} ${bar.anim}`}
+              className={`w-1.5 origin-bottom rounded-full bg-gold ${bar.height} ${bar.anim}`}
             />
           ))}
         </div>

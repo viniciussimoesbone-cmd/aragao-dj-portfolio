@@ -53,7 +53,7 @@ export function Booking() {
   return (
     <section id="contato" className="relative overflow-hidden bg-ink-950 py-28 sm:py-32">
       <div
-        className="absolute inset-0 [background:radial-gradient(70%_60%_at_50%_0%,rgba(224,18,36,0.22),transparent_65%)]"
+        className="absolute inset-0 [background:radial-gradient(70%_60%_at_50%_0%,rgba(201,162,75,0.22),transparent_65%)]"
         aria-hidden
       />
 
@@ -176,7 +176,7 @@ function Field({
     <label className={`flex flex-col gap-2 ${className ?? ""}`}>
       <span className="text-xs font-semibold uppercase tracking-widest text-ink-400">
         {label}
-        {required && <span className="text-blood"> *</span>}
+        {required && <span className="text-gold"> *</span>}
       </span>
       {children}
     </label>

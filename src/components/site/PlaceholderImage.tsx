@@ -35,7 +35,7 @@ export function PlaceholderImage({ label, src, alt, className, fill = true }: Pl
         className
       )}
     >
-      <div className="pointer-events-none absolute -left-10 -top-10 h-40 w-40 rounded-full bg-blood/20 blur-3xl" />
+      <div className="pointer-events-none absolute -left-10 -top-10 h-40 w-40 rounded-full bg-gold/20 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-white/5 blur-3xl" />
       <div className="relative flex flex-col items-center gap-2 px-4 text-center">
         <IconCamera className="h-6 w-6 text-white/25" />

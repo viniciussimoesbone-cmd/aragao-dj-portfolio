@@ -10,7 +10,7 @@ export function Social() {
         <RevealOnScroll className="flex flex-col items-center gap-4">
           <p className="eyebrow">Redes sociais</p>
           <h2 className="heading-display text-3xl text-white sm:text-4xl">ACOMPANHE O ARAGÃO</h2>
-          <p className="text-lg font-semibold text-blood">{artist.instagramHandle}</p>
+          <p className="text-lg font-semibold text-gold">{artist.instagramHandle}</p>
           <Link href={artist.instagramUrl} target="_blank" rel="noreferrer" className="btn-primary">
             <IconInstagram className="h-4 w-4" />
             Seguir no Instagram

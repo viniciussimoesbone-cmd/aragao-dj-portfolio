@@ -12,7 +12,7 @@ export function SectionHeading({ eyebrow, title, align = "left", className }: Se
     <div className={cn(align === "center" && "text-center", className)}>
       <p className="eyebrow">{eyebrow}</p>
       <h2 className="heading-display mt-3 text-4xl sm:text-5xl lg:text-6xl">{title}</h2>
-      <div className={cn("mt-5 h-[3px] w-16 bg-blood", align === "center" && "mx-auto")} />
+      <div className={cn("mt-5 h-[3px] w-16 bg-gold", align === "center" && "mx-auto")} />
     </div>
   );
 }
