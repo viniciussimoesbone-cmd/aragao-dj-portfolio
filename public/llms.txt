@@ -1,0 +1,19 @@
+# Aragão — DJ & Producer
+
+> Site oficial de Aragão (João Aragão), DJ e produtor musical brasileiro (@aragaodj). O site apresenta o artista, sua experiência, agenda de shows, galeria de mídia e um canal direto para contratação via WhatsApp.
+
+Aragão atua em festas particulares, casamentos, formaturas, clubs/casas noturnas, festivais, shows autorais, produções musicais e eventos corporativos. O contato oficial para contratações e parcerias é feito por WhatsApp ou Instagram — não há intermediários ou agências listadas no site.
+
+## Páginas
+
+- [Início](https://aragaodj.com.br/#inicio): Apresentação do artista e chamada principal para contratação.
+- [Sobre](https://aragaodj.com.br/#sobre): Quem é Aragão, sua atuação como DJ e produtor musical.
+- [Experiência](https://aragaodj.com.br/#experiencia): Tipos de evento em que Aragão atua (festas, clubs, festivais, shows, produções, eventos corporativos).
+- [Agenda](https://aragaodj.com.br/#agenda): Próximas datas confirmadas do artista.
+- [Mídia](https://aragaodj.com.br/#midia): Galeria de fotos e vídeos de apresentações e bastidores.
+- [Contato](https://aragaodj.com.br/#contato): Formulário e link direto de WhatsApp para solicitar contratação.
+
+## Contato oficial
+
+- WhatsApp: https://wa.me/5547984485341
+- Instagram: https://www.instagram.com/aragaodj
